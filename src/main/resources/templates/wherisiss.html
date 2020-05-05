@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <title>International Space Station</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>
+
+    <style>#mapid { height: 450px;
+        width: 100%;
+    }</style>
+
+</head>
+<body>
+<h1> Gdzie jest ISS (International Space Station)</h1>
+Prędkość na orbicie: 7,66 km/s <br>
+Wysokość orbity: 402 - 408 km <br>
+Masa: 417 289 kg <br> <br>
+
+    <form class="pure-form"  th:action="@{/}" th:object="${init}" method="get">
+        <button class="pure-button pure-button-primary">odświerz</button></p>
+    </form>
+
+
+<div id="mapid"></div>
+
+<script th:inline="javascript" >
+    var zoom =3;
+    var points = [[${init}]];
+    var lat = [[${isspositionLat}]];
+    var lon = [[${isspositionLon}]];
+    var country = [[${isspositionCountry}]];
+    var localTime = [[${isspositionTime}]];
+    var sunrise =  [[${isspositionSunRise}]];
+    var sunset =  [[${isspositionSunSet}]];
+
+    var map = L.map('mapid').setView([lat, lon], zoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([lat, lon]).addTo(map)
+        .bindPopup(`${country} <br>  ${lat} , ${lon} <br> Local Time = ${localTime} <br>
+         SunRise ${sunrise}   SunSet ${sunset}`)
+        .openPopup();
+
+</script>
+<!--<meta http-equiv="refresh" content="10"> -->
+</body>
+</html>
