@@ -29,9 +29,9 @@ public class Init {
     public String initData(){
         issApiControllers.getIssPosition();
         savings++;
-        if(savings%2==0) {
+//        if(savings%2==0) {
             initDataSavings();
-        }
+//        }
         return "OK";
     }
 
